@@ -1,0 +1,42 @@
+
+	<div class="grid">
+		<p-toast></p-toast>
+
+		<div class="col-9 md:col-6">
+			<div class="card p-fluid">
+				<h5>Create new task</h5>
+				<form (ngSubmit)="onSubmit()">
+				<div class="field">
+					<label htmlFor="title">Title</label>
+					<input pInputText id="title" type="text" [(ngModel)]="task.title" name="title" />
+				</div>
+				<div class="field">
+					<label htmlFor="description">Description</label>
+					<input pInputText id="description" [(ngModel)]="task.description" name="description"  type="text" />
+				</div>
+				<div class="field">
+					<label htmlFor="description">Description</label>
+					<p-dropdown [options]="availableProjects" [(ngModel)]="selectedProjectId" optionLabel="title" 
+								[filter]="true" [showClear]="true" [placeholder]="'Select a Project'"
+								[ngModelOptions]="{standalone: true}" (onChange)="onProjectSelectionChange($event)">
+					</p-dropdown>
+				  </div>
+				<span class="p-buttonset">
+					<button pButton pRipple type="submit" label="Save"></button>
+				</span>
+				</form>
+			</div>
+		</div>
+	</div>
+	<style>
+		.grid {
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  height: 80vh; 
+	
+		}
+	  </style>
+	
+	
+	

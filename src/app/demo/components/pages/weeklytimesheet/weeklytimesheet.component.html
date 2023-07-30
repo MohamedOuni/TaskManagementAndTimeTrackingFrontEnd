@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body text-center"> 
+            <h5 class="card-title">Generate Timesheet</h5>
+            <div class="field">
+                <p-dropdown
+                  [options]="weeks"
+                  [(ngModel)]="selectedWeek"
+                  [showClear]="true"
+                  [placeholder]="'Select a Week'"
+                  [filter]="true"
+                  [ngModelOptions]="{ standalone: true }"
+                  (onChange)="onWeekSelectionChange($event)"
+                >
+                </p-dropdown>
+              </div>
+            <div class="mt-3"> 
+                <button pButton pRipple label="Export" (click)="exportWeeklyReport()"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container mt-6">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card custom-card-width text-center"> 
+          <div class="card-body">
+            <h5 class="card-title">Current Date</h5>
+            <p class="card-text">{{ getCurrentWeek() }}</p>
+            <p class="card-text">{{ getCurrentDate() }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <style>
+    .custom-card-width {
+  max-width: 500px; 
+  margin: 0 auto; /* Center the card horizontally */
+}
+  </style>

@@ -1,0 +1,67 @@
+<div class="grid">
+  <p-toast></p-toast>
+  <div class="col-12 md:col-6">
+    <div class="card">
+      <div class="container" style="height: 400px; overflow-y: auto;">
+        <div class="row row-cols-3">
+          <div class="col mb-3" *ngFor="let task of tasks; let i = index" [ngClass]="{'in-progress': task.isInProgress}"
+            (dragstart)="onDragStart($event, task, i)" draggable="true">
+            <p-fieldset [legend]="task.title" [toggleable]="true" class="line-height-3 m-0"
+              (drop)="onDrop($event, task, i, 'tasks')" (dragover)="onDragOver($event)">
+              <p>{{ task.description }}</p>
+              <span class="p-buttonset">
+                <button pButton pRipple *ngIf="!task.isInProgress" label="Delete" icon="pi pi-trash"
+                  (click)="deleteTask(task)"></button>
+              </span>
+            </p-fieldset>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 md:col-6">
+    <div class="card">
+      <div class="container" style="height: 400px; overflow-y: auto;">
+        <div class="row row-cols-3">
+          <div class="col mb-3" (dragenter)="onDragEnter('inProgress')" (dragleave)="onDragLeave('inProgress')"
+            (dragover)="onDragOver($event)" (drop)="onDrop($event, null, -1, 'inProgress')"
+            [ngClass]="{'dragover': isDraggingOverInProgress}">
+            <p-fieldset [legend]="'In Progress'" [toggleable]="true" class="line-height-3 m-0">
+              <p *ngIf="selectedTask && selectedTask.isInProgress">{{ selectedTask.description }}</p>
+              <div class="chronometer" *ngIf="selectedTask && selectedTask.isInProgress && elapsedTime > 0">
+                <i class="pi pi-clock"></i> Time: {{ getFormattedTime(elapsedTime) }}
+              </div>
+            </p-fieldset>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .grid {
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  height: 80vh; 
+		}
+  .chronometer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #333;
+  margin-top: 10px;
+}
+
+.pi-clock {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.chronometer-time {
+  font-weight: bold;
+}
+
+</style>
