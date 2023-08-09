@@ -1,37 +1,37 @@
-import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
+import { Router } from '@angular/router';
+const TOKEN_KEY = 'auth-token';
 
 @Component({
     selector: 'app-menu',
     templateUrl: './app.menu.component.html'
 })
-export class AppMenuComponent implements OnInit {
+export class AppMenuComponent {
 
     model: any[] = [];
-
-    constructor(public layoutService: LayoutService) { }
-
+    constructor(public layoutService: LayoutService, private router: Router) { }
+    
     ngOnInit() {
+        this.updateMenuItems();
+    }
+
+    updateMenuItems() {
+        const userRole = this.getRole().Role;
+        const isSupervisor = userRole === 'Supervisor';
+
         this.model = [
-          /*   {
-                label: 'UI Components',
+            {
+                label: 'HOME',
                 items: [
-                    { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout'] },
-                    { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input'] },
-                    { label: 'Button', icon: 'pi pi-fw pi-box', routerLink: ['/uikit/button'] },
-                    { label: 'Table', icon: 'pi pi-fw pi-table', routerLink: ['/uikit/table'] },
-                    { label: 'File', icon: 'pi pi-fw pi-file', routerLink: ['/uikit/file'] },
-                    { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
-                    { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/misc'] }
+                    { label: 'Dashboard', icon: 'pi pi-fw pi-id-card', routerLink: ['/ey/dashboard'] },
                 ]
-            }, */
+            },
             {
                 label: 'Pages',
                 icon: 'pi pi-fw pi-briefcase',
                 items: [
-            
-                    {
+                  /*   {
                         label: 'Auth',
                         icon: 'pi pi-fw pi-user',
                         items: [
@@ -51,38 +51,65 @@ export class AppMenuComponent implements OnInit {
                                 routerLink: ['/auth/access']
                             }
                         ]
-                    },
+                    }, */
                     {
                         label: 'Project',
                         icon: 'pi pi-fw pi-briefcase',
-                        routerLink: ['/pages/crud']
+                        command: () => {
+                            if (isSupervisor) {
+                                this.router.navigate(['/ey/pages/crud']);
+                            } else {
+                                this.router.navigate(['/auth/access']);
+                            }
+                        }
                     },
+                    
                     {
                         label: 'Task',
                         icon: 'pi pi-fw pi-book',
-
                         items: [
                             {
                                 label: 'New Task',
                                 icon: 'pi pi-fw pi-plus',
-                                routerLink: ['/pages/task']
+                                routerLink: ['/ey/pages/task']
                             },
                             {
                                 label: 'My Task',
                                 icon: 'pi pi-fw pi-clone',
-                                routerLink: ['/pages/mytask']
+                                routerLink: ['/ey/pages/mytask']
                             },
                             {
                                 label: 'WeeklyTimesheet',
-                                icon: 'pi pi-fw pi-clone',
-                                routerLink: ['/pages/weekly']
+                                icon: 'pi pi-fw pi-file-export',
+                                routerLink: ['/ey/pages/weekly']
+                            },
+                            {
+                                label: 'MonthlyTimesheet',
+                                icon: 'pi pi-fw pi-file-excel',
+                                command: () => {
+                                    if (isSupervisor) {
+                                        this.router.navigate(['/ey/pages/monthly']);
+                                    } else {
+                                        this.router.navigate(['/auth/access']);
+                                    }
+                                }
                             },
                         ]
-                        
                     },
                 ]
             },
-          
         ];
+    }
+
+    getRole(): any {
+        const token = window.sessionStorage.getItem(TOKEN_KEY);
+
+        if (token) {
+            const decodedToken = JSON.parse(atob(token.split('.')[1]));
+
+            return {
+                Role: decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
+            };
+        }
     }
 }

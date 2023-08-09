@@ -1,103 +1,47 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { Product } from '../../api/product';
-import { ProductService } from '../../service/product.service';
-import { Subscription } from 'rxjs';
-import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { Component, OnInit } from '@angular/core';
+import { Task, TaskService } from 'src/app/core/service/task.service';
+import { StorageService } from 'src/app/core/service/storage.service';
+import { Router } from '@angular/router';
 
 @Component({
     templateUrl: './dashboard.component.html',
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit{
 
-    items!: MenuItem[];
+    
+  tasks: Task[] = [];
+  isLoggedIn = false;
+  isLoginFailed = false;
 
-    products!: Product[];
+  constructor(private taskService: TaskService, private storageService: StorageService,private router:Router) {}
 
-    chartData: any;
+  ngOnInit() {
+  
 
-    chartOptions: any;
+    const token = this.storageService.getToken();
 
-    subscription!: Subscription;
-
-    constructor(private productService: ProductService, public layoutService: LayoutService) {
-        this.subscription = this.layoutService.configUpdate$.subscribe(() => {
-            this.initChart();
-        });
+    if (!token) {
+      console.error('Le jeton d\'authentification est manquant.');
+      return;
     }
 
-    ngOnInit() {
-        this.initChart();
-        this.productService.getProductsSmall().then(data => this.products = data);
+    this.taskService.getTasksForSupervispr(token).subscribe(
+      (tasks: Task[]) => {
+        this.tasks = tasks;
+      },
+      (error: any) => {
+        console.error('Une erreur s\'est produite lors de la récupération des tâches :', error);
+      }
+    );
+  }
 
-        this.items = [
-            { label: 'Add New', icon: 'pi pi-fw pi-plus' },
-            { label: 'Remove', icon: 'pi pi-fw pi-minus' }
-        ];
-    }
+formatWorkHours(workHours: number): string {
+  const totalSeconds = Math.floor(workHours);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = Math.floor(totalSeconds % 60);
+  return ` ${hours}h ${minutes}m ${seconds}s`;
+}
 
-    initChart() {
-        const documentStyle = getComputedStyle(document.documentElement);
-        const textColor = documentStyle.getPropertyValue('--text-color');
-        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-        this.chartData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [
-                {
-                    label: 'First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    borderColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    tension: .4
-                },
-                {
-                    label: 'Second Dataset',
-                    data: [28, 48, 40, 19, 86, 27, 90],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--green-600'),
-                    borderColor: documentStyle.getPropertyValue('--green-600'),
-                    tension: .4
-                }
-            ]
-        };
-
-        this.chartOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: textColor
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                },
-                y: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                }
-            }
-        };
-    }
-
-    ngOnDestroy() {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
-    }
 }

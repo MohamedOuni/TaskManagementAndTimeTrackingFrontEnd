@@ -3,14 +3,13 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-body text-center"> 
-            <h5 class="card-title">Generate Timesheet</h5>
+            <h3 class="card-title">Generate Timesheet : <h6>{{getCurrentDate()}}</h6></h3>
             <div class="field">
                 <p-dropdown
                   [options]="weeks"
                   [(ngModel)]="selectedWeek"
                   [showClear]="true"
-                  [placeholder]="'Select a Week'"
-                  [filter]="true"
+                  [placeholder]="getCurrentWeek()"
                   [ngModelOptions]="{ standalone: true }"
                   (onChange)="onWeekSelectionChange($event)"
                 >
@@ -24,19 +23,60 @@
       </div>
     </div>
   </div>
-  <div class="container mt-6">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card custom-card-width text-center"> 
-          <div class="card-body">
-            <h5 class="card-title">Current Date</h5>
-            <p class="card-text">{{ getCurrentWeek() }}</p>
-            <p class="card-text">{{ getCurrentDate() }}</p>
-          </div>
-        </div>
-      </div>
+  <div class="col-12">
+    <div class="card">
+      <h4>Information of the week selected
+      </h4>
+      <p-table
+        [value]="selectedWeekTasks"
+        rowGroupMode="subheader"
+        groupRowsBy="any-field-you-want-to-group-by"
+        sortField="any-field-you-want-to-sort-by"
+        sortMode="single"
+        responsiveLayout="scroll"
+        [scrollable]="true"
+        scrollHeight="400px"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Creation Date</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Time spent</th>
+            <th>Project Name</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-task let-rowIndex="rowIndex">
+          <tr
+            pRowGroupHeader
+          >
+          
+          </tr>
+          <tr>
+         
+              <td>
+                {{ task.currentDate | date: 'yyyy-MM-dd' }}
+              </td>
+           
+            <td >
+              {{task.title}}
+            </td>
+            <td >
+              {{task.description}}
+            </td>
+            <td >
+              {{task.workHours}}
+            </td>
+            <td >
+              {{task.projectName}}
+            </td>
+           
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
   </div>
+  
   <style>
     .custom-card-width {
   max-width: 500px; 

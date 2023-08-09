@@ -51,9 +51,12 @@
                           <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
                           <label for="rememberme1">Remember me</label>
                       </div>
-                      <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a>
+                    </div>
+                    <div style="text-align: center;">
+                      <button pButton pRipple label="Sign In" class="w-full p-3 text-xl"></button>
+                      <p style="margin-top: 10px;">Don't have an account? <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)" routerLink="/auth/register">Sign up</a></p>
                   </div>
-                  <button pButton pRipple label="Sign In" class="w-full p-3 text-xl" ></button>
+
                   <div >
                     <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger" role="alert">
                       Login failed: {{ errorMessage }}

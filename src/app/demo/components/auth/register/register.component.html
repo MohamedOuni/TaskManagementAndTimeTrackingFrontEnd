@@ -1,0 +1,109 @@
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+    <div class="flex flex-column align-items-center justify-content-center">
+      <img src="assets/demo/images/login/Ernst-Young-Logo.png" class="mb-5 w-6rem flex-shrink-0">
+      <div style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
+        <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
+          <div class="text-center mb-5">
+            <img src="assets/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3">
+            <div class="text-900 text-3xl font-medium mb-3">Welcome to EY</div>
+            <span class="text-600 font-medium">Sign up to continue</span>
+          </div>
+          <form
+            name="form"
+            (ngSubmit)="onSubmit()"
+            #f="ngForm"
+            novalidate
+          >
+            <div>
+              <label for="Name" class="block text-900 text-xl font-medium mb-2">Name</label>
+              <input id="Name" type="text" placeholder="Name" pInputText class="w-full md:w-30rem mb-5" style="padding:1rem"
+                name="Name"
+                [(ngModel)]="form.Name"
+                required
+                #Name="ngModel"
+                [ngClass]="{ 'is-invalid': f.submitted && Name.errors }"
+              >
+              <div *ngIf="Name.errors && f.submitted" class="invalid-feedback">
+                Name is required!
+              </div>
+  
+              <label for="Email" class="block text-900 text-xl font-medium mb-2">Email</label>
+              <input id="Email" type="email" placeholder="Email" pInputText class="w-full md:w-30rem mb-5" style="padding:1rem"
+                name="Email"
+                [(ngModel)]="form.Email"
+                required
+                #Email="ngModel"
+                [ngClass]="{ 'is-invalid': f.submitted && Email.errors }"
+              >
+              <div *ngIf="Email.errors && f.submitted" class="invalid-feedback">
+                Email is required!
+              </div>
+  
+              <label for="UserName" class="block text-900 text-xl font-medium mb-2">Username</label>
+              <input id="UserName" type="text" placeholder="Username" pInputText class="w-full md:w-30rem mb-5" style="padding:1rem"
+                name="UserName"
+                [(ngModel)]="form.UserName"
+                required
+                #UserName="ngModel"
+                [ngClass]="{ 'is-invalid': f.submitted && UserName.errors }"
+              >
+              <div *ngIf="UserName.errors && f.submitted" class="invalid-feedback">
+                Username is required!
+              </div>
+  
+              <label for="PasswordHash" class="block text-900 text-xl font-medium mb-2">Password</label>
+              <p-password id="PasswordHash" placeholder="Password" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"
+                name="PasswordHash"
+                [(ngModel)]="form.PasswordHash"
+                required
+                minlength="6"
+                #PasswordHash="ngModel"
+                [ngClass]="{ 'is-invalid': f.submitted && PasswordHash.errors }"
+              ></p-password>
+              <div *ngIf="PasswordHash.errors && f.submitted" class="invalid-feedback">
+                <div *ngIf="PasswordHash.errors['required']">Password is required</div>
+                <div *ngIf="PasswordHash.errors['minlength']">
+                  Password must be at least 6 characters
+                </div>
+              </div>
+  
+              <label for="Team" class="block text-900 text-xl font-medium mb-2">Team</label>
+              <select id="Team" class="w-full md:w-30rem mb-5 p-3" pInputSelect
+                name="Team"
+                [(ngModel)]="form.Team"
+                required
+                #Team="ngModel"
+                [ngClass]="{ 'is-invalid': f.submitted && Team.errors }"
+              >
+                <option [ngValue]="null" disabled>Select a team</option>
+                <option *ngFor="let team of teams" [ngValue]="team.value">{{ team.label }}</option>
+              </select>
+              <div *ngIf="Team.errors && f.submitted" class="invalid-feedback">
+                Team is required!
+              </div>
+  
+              <label for="Role" class="block text-900 text-xl font-medium mb-2">Role</label>
+              <select id="Role" class="w-full md:w-30rem mb-5 p-3" pInputSelect
+                name="Role"
+                [(ngModel)]="form.Role"
+                required
+                #Role="ngModel"
+                [ngClass]="{ 'is-invalid': f.submitted && Role.errors }"
+              >
+                <option [ngValue]="null" disabled>Select a role</option>
+                <option *ngFor="let role of roles" [ngValue]="role.value">{{ role.label }}</option>
+              </select>
+              <div *ngIf="Role.errors && f.submitted" class="invalid-feedback">
+                Role is required!
+              </div>
+              <div style="text-align: center;">
+                <button pButton pRipple label="Sign Up" class="w-full p-3 text-xl"></button>
+                <p style="margin-top: 10px;">Have an Account? <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)" routerLink="/auth/login">Sign in</a></p>
+            </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

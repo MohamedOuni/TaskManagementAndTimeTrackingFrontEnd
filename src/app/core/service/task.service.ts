@@ -84,6 +84,24 @@ export class TaskService {
 
     return this.http.get<Blob>(`${this.baseUrl}/Tasks/export/monthly/supervisor/${year}/${month}`, { headers, responseType: 'blob' as 'json' });
   }
+  getTasksWithTimeForWeek(weekNumber: number, token:string) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token
+    });
+
+    return this.http.get<any>(`${this.baseUrl}/Tasks/tasks-with-time/${weekNumber}`,{ headers });
+  }
+
+  getTasksWithTimeForMonth(year: number, month: number, token: string): Observable<any[]> {
+    const url = `${this.baseUrl}/Tasks/export/monthly/${year}/${month}`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token
+    });
+
+    return this.http.get<any[]>(url, { headers });
+  }
 
 }
 
@@ -94,6 +112,7 @@ export class Task {
   workHours!: number;
   projectId!: number;
   timeSpentPerWeek?: any[]; 
+  
 }
 
 export class Project {

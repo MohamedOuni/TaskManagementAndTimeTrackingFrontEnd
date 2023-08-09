@@ -36,7 +36,7 @@ export class LoginComponent {
       ngOnInit(): void {
         if (this.storageService.isLoggedIn()) {
           this.isLoggedIn = true;
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/ey/dashboard']);
         }
       }
     
@@ -47,7 +47,7 @@ export class LoginComponent {
             this.storageService.saveUser(data);
             this.isLoginFailed = false;
             this.isLoggedIn = true;
-            this.router.navigate(['/']);
+            this.router.navigate(['/ey']);
           },
           error: (err) => {
             this.errorMessage = err.error.message;
