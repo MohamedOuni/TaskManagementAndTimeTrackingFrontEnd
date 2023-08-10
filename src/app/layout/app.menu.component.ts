@@ -24,7 +24,18 @@ export class AppMenuComponent {
             {
                 label: 'HOME',
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-id-card', routerLink: ['/ey/dashboard'] },
+
+                    {
+                        label: 'Dashboard',
+                        icon: 'pi pi-fw pi-id-card',
+                        command: () => {
+                            if (isSupervisor) {
+                                this.router.navigate(['/ey/dashboard']);
+                            } else {
+                                this.router.navigate(['/auth/access']);
+                            }
+                        }
+                    },
                 ]
             },
             {

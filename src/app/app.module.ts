@@ -11,6 +11,7 @@ import { EventService } from './demo/service/event.service';
 import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,9 @@ import { PhotoService } from './demo/service/photo.service';
     ],
     imports: [
         AppRoutingModule,
-        AppLayoutModule
+        AppLayoutModule,
+        
+        ButtonModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy},

@@ -4,6 +4,7 @@ import { filter, Subscription } from 'rxjs';
 import { LayoutService } from "./service/app.layout.service";
 import { AppSidebarComponent } from "./app.sidebar.component";
 import { AppTopBarComponent } from './app.topbar.component';
+import { StorageService } from '../core/service/storage.service';
 
 @Component({
     selector: 'app-layout',
@@ -14,6 +15,7 @@ export class AppLayoutComponent implements OnDestroy {
     overlayMenuOpenSubscription: Subscription;
 
     menuOutsideClickListener: any;
+    isLoggedIn = false;
 
     profileMenuOutsideClickListener: any;
 
@@ -21,7 +23,7 @@ export class AppLayoutComponent implements OnDestroy {
 
     @ViewChild(AppTopBarComponent) appTopbar!: AppTopBarComponent;
 
-    constructor(public layoutService: LayoutService, public renderer: Renderer2, public router: Router) {
+    constructor(        private storageService: StorageService ,public layoutService: LayoutService, public renderer: Renderer2, public router: Router) {
         this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
             if (!this.menuOutsideClickListener) {
                 this.menuOutsideClickListener = this.renderer.listen('document', 'click', event => {
@@ -50,13 +52,32 @@ export class AppLayoutComponent implements OnDestroy {
             }
         });
 
+        
+
         this.router.events.pipe(filter(event => event instanceof NavigationEnd))
             .subscribe(() => {
                 this.hideMenu();
                 this.hideProfileMenu();
             });
+            
+         
     }
 
+
+    ngOnInit(): void {
+        if (this.storageService.isLoggedIn()) {
+          this.isLoggedIn = true;
+          this.router.navigate(['/ey'])
+        }
+        else{
+            this.router.navigate(['/auth/login'])
+ 
+        }
+          
+        
+      }
+      
+    
     hideMenu() {
         this.layoutService.state.overlayMenuActive = false;
         this.layoutService.state.staticMenuMobileActive = false;

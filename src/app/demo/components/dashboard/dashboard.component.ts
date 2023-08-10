@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { StorageService } from 'src/app/core/service/storage.service';
 import { Task, TaskService } from 'src/app/core/service/task.service';
@@ -15,10 +16,14 @@ export class DashboardComponent implements OnInit{
     projectWorkHoursData: any;
 projectWorkHoursOptions: any;
 mostWorkedProject!: Project;
+isLoggedIn = false;
 
-  constructor(private taskService: TaskService, private storageService : StorageService) {}
+  constructor(private taskService: TaskService, private storageService : StorageService, private router:Router) {}
 
+
+  
   ngOnInit() {
+   
     this.initCharts();
     this.loadMostWorkedUser();
     this.initProjectChart();
