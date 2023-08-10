@@ -103,6 +103,46 @@ export class TaskService {
     return this.http.get<any[]>(url, { headers });
   }
 
+
+  getUserWorkHoursStats(token: string): Observable<any> {
+    const url = `${this.baseUrl}/Tasks/user-stats`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token
+    });
+
+    return this.http.get<any>(url, { headers });
+  }
+
+  getMostWorkedUser(token: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token
+    });
+
+    const url = `${this.baseUrl}/Tasks/most-worked-user`;
+    return this.http.get(url, { headers });
+  }
+
+
+  getProjectWorkHoursStats(token: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token
+    });
+    const url = `${this.baseUrl}/Tasks/project-stats`;
+    return this.http.get<any>(url, { headers });
+  }
+
+  getProjectWithMostWorkedTime(token: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token
+    });
+    const url = `${this.baseUrl}/Tasks/most-worked-project`;
+    return this.http.get<any>(url, { headers });
+  }
+
 }
 
 export class Task {

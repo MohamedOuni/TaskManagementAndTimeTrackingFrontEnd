@@ -4,4 +4,7 @@ export class user{
     Email!:string;
     UserName!:string;
     PasswordHash!: string;
+    userName!:String;
+    totalWorkHours!: number;
+
   } 

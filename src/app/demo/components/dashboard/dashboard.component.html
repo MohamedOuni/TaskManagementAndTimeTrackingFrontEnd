@@ -1,21 +1,118 @@
-
-<div class="container">
-    <div class="row row-cols-3">
-      <div *ngFor="let task of tasks">
-        <ng-template pTemplate="header">
-            <img alt="Card" src="https://us.123rf.com/450wm/piotrkt/piotrkt1712/piotrkt171216640/93671458-milan-italy-august-10-2017-ey-logo-on-the-website-homepage.jpg?ver=6" />
-          </ng-template>
-          <h1 style="color: rgb(72, 71, 57);" >
-            {{ task.title }}
-          </h1>
-          <p>
-           {{ task.description }} 
-            </p>
-            <h5 style="color: green;">
-              work hours : {{ formatWorkHours(task.workHours) }}
-            </h5>
-          <ng-template pTemplate="footer">
-          </ng-template>
+<div class="grid p-fluid">
+  <div class="col-12 lg:col-6">
+    <div class="card flex flex-column align-items-center user-card">
+      <h5 class="text-center w-full">User Work Hours Statistics</h5>
+      <p-chart type="pie" [data]="userWorkHoursData" [options]="userWorkHoursOptions"></p-chart>
+      <div *ngIf="mostWorkedUser" class="most-worked-user">
+        <div class="user-avatar">
+          <img src="assets/demo/images/login/avatar.png" alt="User Avatar" height="80" class="mb-3">
+        </div>
+        <div class="user-details">
+          <p class="user-name">{{ mostWorkedUser.userName }}</p>
+          <div class="user-role">
+            <div class="star-icon">&#9733;</div>
+            <p class="role-text">Top Performer</p>
+          </div>
         </div>
       </div>
     </div>
+  </div>
+  <div class="col-12 lg:col-6">
+    <div class="card flex flex-column align-items-center project-card">
+      <h5 class="text-center w-full">Project Work Hours Statistics</h5>
+    <p-chart type="doughnut" [data]="projectWorkHoursData" [options]="projectWorkHoursOptions"></p-chart>
+  
+      <div *ngIf="mostWorkedProject" class="most-worked-user">
+        <div class="user-avatar">
+          <img src="assets/demo/images/login/avatar2.png" alt="User Avatar" height="80" class="mb-3">
+        </div>
+        <div class="user-details">
+          <p class="user-name">{{ mostWorkedProject.title }}</p>
+          <div class="user-role">
+            <div class="star-icon">&#9733;</div>
+            <p class="role-text">Top Project</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<style>
+ .most-worked-user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.user-avatar img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary-color);
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.user-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 5px;
+}
+
+.user-role {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: var(--text-color-secondary);
+}
+
+.star-icon {
+  font-size: 24px;
+  color: var(--primary-color);
+  margin-right: 5px;
+}
+
+.role-text {
+  margin-left: 5px;
+}
+
+.most-worked-project {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.project-avatar img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary-color);
+}
+
+.project-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.project-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 5px;
+}
+
+</style>
